@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siya Mart</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .photos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+        .photos img {
+            width: 100%;
+            max-width: 350px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .order-section {
+            background-color: white;
+            padding: 30px;
+            margin: 40px auto;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: none;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .response {
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Siya Mart</h1>
+    </header>
+
+    <div class="photos">
+        <img src="/images/pic1.jpg" alt="Shop Photo 1">
+        <img src="/images/pic2.jpg" alt="Shop Photo 2">
+    </div>
+
+    <div class="order-section">
+        <h2>Place Your Order</h2>
+        <textarea id="orderDetails" placeholder="Write your order here..."></textarea><br>
+        <button onclick="placeOrder()">Place Order</button>
+        <div class="response" id="responseMsg"></div>
+    </div>
+
+    <script>
+        function placeOrder() {
+            const orderDetails = document.getElementById('orderDetails').value;
+            fetch('/api/shop/order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderDetails)
+            })
+            .then(res => res.text())
+            .then(msg => {
+                document.getElementById('responseMsg').innerText = msg;
+                document.getElementById('orderDetails').value = '';
+            })
+            .catch(err => {
+                document.getElementById('responseMsg').innerText = "Error placing order.";
+            });
+        }
+    </script>
+</body>
+</html>
